@@ -1,0 +1,47 @@
+fetch("https://api.github.com/users/gustavobritof")
+.then(
+    (res)=>{
+        //console.log(res.json())
+        return res.json()
+    }
+    )
+.then(
+    (data)=>{
+        console.log(data.login)
+    }
+)
+---------------------------------
+async function acessarAPI() {
+    const res = await fetch("https://api.github.com/users/gustavobritof")
+    console.log(res)
+}
+---------------------------------
+async function dizerOi(){
+    console.log("oi")
+}
+
+dizerOi()
+.then(
+    (msg)=>console.log(msg)
+    )
+---------------------------------------------
+    async function acessarAPI() {
+    const res = await fetch("https://api.github.com/users/gustavobritof")
+    const resJson = res.json()
+    resJson.then((data)=>console.log(data))
+}
+----------------------------------------------
+//then e antigo, async é mais novo
+
+   async function acessarAPI() {
+    const res = await fetch("https://api.github.com/users/gustavobritof")
+    const resJson = await res.json()
+    console.log(resJson.id)
+}
+
+--------------------------
+async function acessarAPI() {
+    const res = await fetch("https://api.github.com/users/gustavobritof")
+    const {id,login} = await res.json()
+    console.log(id+ " " + login)
+}

@@ -21,8 +21,11 @@
 //import ComponenteAvo from "./components/atividades/atividade02/questao03/ComponenteAvo";
 //import ComponenteAvo from "./components/atividades/atividade02/questao02/ComponenteAvo";
 //import FunctionEstados from "./components/09Estados/FunctionEstados";
-import MinhaPromise from "./components/12Promisses/MinhaPromise";
-
+//import MinhaPromise from "./components/12Promisses/MinhaPromise";
+//import MeuAsync from "./components/12Promisses/MeuAsync";
+//import Questao01X from "./components/AP1/Questao01"
+//import Questao02 from "./components/AP1/Questao02";
+import Questao03 from "./components/AP1/Questao03";
 /* function App() {
   return (
     <div className="App" >
@@ -74,7 +77,7 @@ import MinhaPromise from "./components/12Promisses/MinhaPromise";
     return (
       <div className="App" >
         
-        <MinhaPromise/>
+        <Questao03/>
 
       </div>
     )
