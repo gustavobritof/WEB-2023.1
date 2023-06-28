@@ -8,7 +8,7 @@ const MyMenu = () =>{
             <AppBar position="static">
                 <Container>
                     <Toolbar>
-                        <AdbIcon sx={{display:{xs:"none",md:"flex"},mr:1}}/>
+                        <AdbIcon sx={{display:{xs:"none",md:"flex"},mr:1}}/> {/* Se for tela pequena, não mostra o icone */}
                         <Typography
                             variant="h5"
                             component="a"

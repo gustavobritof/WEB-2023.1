@@ -2,21 +2,52 @@ import { Table,TableHead,TableRow,Paper,TableCell, TableBody, TableContainer, Ty
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ListarProfessor =()=>{
 
-    const professores = [
-        { id: 0, nome: "João", curso: "ES", titulacao: "GRAD" },
-        { id: 1, nome: "Maria", curso: "CC", titulacao: "MEST" },
-        { id: 2, nome: "José", curso: "EC", titulacao: "DOUT" },
-      ];
+/*     const professores = [
+        { id: 0, nome: "João", curso: "ES", titulacao: "GRAD", ai: { cg: true, mc: false, al: false, es: false }},
+        { id: 1, nome: "Maria", curso: "CC", titulacao: "MEST", ai: { cg: false, mc: true, al: false, es: false } },
+        { id: 2, nome: "José", curso: "EC", titulacao: "DOUT", ai: { cg: false, mc: false, al: true, es: false } },
+      ]; */
 
-    function deleteProfessorById(id){
-        if(window.confirm("Deseja realmente excluir?")){
-            alert("Professor" + id + "excluído com sucesso!")
-        }
+    const [professores, setProfessores] = useState([])
+
+    const navigate = useNavigate();
+
+    useEffect(
+      ()=>{
+          
+          axios.get("http://localhost:3001/professores/listar")
+          .then(
+              (response)=>{
+                  //console.log(response)
+                  setProfessores(response.data)
+              }
+          )
+          .catch(error=>console.log(error))
+      }
+      ,
+      []
+  )
+
+  function deleteProfessorById(id) {
+    if (window.confirm("Deseja realmente excluir?")) {
+      axios.delete(`http://localhost:3001/professores/deletar/${id}`)
+        .then(
+          (res) => {
+            const resultado = professores.filter(professor => professor._id != id)
+            setProfessores(resultado)
+            navigate("/ListarProfessor")
+          }
+        )
+        .catch(error => console.log(error))
     }
+  }
+
 
       return (
         <>
@@ -41,16 +72,16 @@ const ListarProfessor =()=>{
                         (professor)=>{
                             return(
                                 <TableRow>
-                                    <TableCell>{professor.id}</TableCell>
+                                    <TableCell>{professor._id}</TableCell>
                                     <TableCell>{professor.nome}</TableCell>
                                     <TableCell>{professor.curso}</TableCell>
                                     <TableCell>{professor.titulacao}</TableCell>
                                     <TableCell>
                                         <Box>
-                                            <IconButton aria-label="edit" color="primary" component={Link} to={`/editarProfessor/`}>
+                                            <IconButton aria-label="edit" color="primary" component={Link} to={`/editarProfessor/${professor._id}`}>
                                                 <EditIcon/>
                                             </IconButton>
-                                            <IconButton aria-label="delete" color="error" onClick={()=>deleteProfessorById(professor.id)}>
+                                            <IconButton aria-label="delete" color="error" onClick={()=>deleteProfessorById(professor._id)}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </Box>

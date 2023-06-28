@@ -13,23 +13,34 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CadastrarProfessor = () => {
   const [nome, SetNome] = useState(""); //textfield
   const [curso, SetCurso] = useState("");
   const [titulacao, SetTitulacao] = useState("GRAD");
   const [ai, SetAi] = useState({ cg: false, mc: false, al: false, es: false }); //checkbox
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(nome);
-    console.log(curso);
+    const novoProfessor = { nome, curso, titulacao, ai }
+    axios.post("http://localhost:3001/professores/cadastrar", novoProfessor)
+      .then((response) => {
+        alert(`Professor ${response.data._id} cadastrado com sucesso`)
+        navigate("/ListarProfessor")
+      }
+      )
+      .catch(error =>
+        console.log(error))
+
   }
 
-  function handleCheckbox(event){
+  function handleCheckbox(event) {
     SetAi({
       ...ai,
-      [event.target.name]:event.target.checked
+      [event.target.name]: event.target.checked
 
     })
   }
@@ -39,7 +50,8 @@ const CadastrarProfessor = () => {
       <Typography marginTop={5} variant="h5" fontWeight="Bold">
         Cadastrar Professor
       </Typography>
-      <Box sx={{ width: "80%" }} onSubmit={handleSubmit}>
+
+      <Box sx={{ width: "80%" }} component="form" onSubmit={handleSubmit}>
         <TextField
           required
           fullWidth
@@ -69,7 +81,7 @@ const CadastrarProfessor = () => {
             labelId="select-tit-label"
             label="Titulação"
             value={titulacao}
-            onChange={(event)=>SetTitulacao(event.target.value)}
+            onChange={(event) => SetTitulacao(event.target.value)}
           >
             <MenuItem value="GRAD">Graduação</MenuItem>
             <MenuItem value="MEST">Mestrado</MenuItem>
@@ -78,25 +90,23 @@ const CadastrarProfessor = () => {
         </FormControl>
 
         {/* Areas de interesse */}
-        <FormControl sx={{mt:2,ml:2}} component="fieldset" variant="standard">
-          <FormLabel component="legend" sx={{fontSize:12,mb:2}}>Áreas de interesse</FormLabel>
+        <FormControl sx={{ mt: 2, ml: 2 }} component="fieldset" variant="standard">
+          <FormLabel component="legend" sx={{ fontSize: 12, mb: 2 }}>Áreas de interesse</FormLabel>
           <FormGroup>
-            <FormControlLabel control={<Checkbox checked={ai.cg} name="cg" onChange={handleCheckbox} />} label="Computação Gráfica"/>
-            <FormControlLabel control={<Checkbox checked={ai.mc} name="mc" onChange={handleCheckbox} />} label="Matemática computacional"/>
-            <FormControlLabel control={<Checkbox checked={ai.al} name="al" onChange={handleCheckbox}/>} label="Algoritmos"/>
-            <FormControlLabel control={<Checkbox checked={ai.es} name="es" onChange={handleCheckbox}/>} label="Engenharia de software"/>
+            <FormControlLabel control={<Checkbox checked={ai.cg} name="cg" onChange={handleCheckbox} />} label="Computação Gráfica" />
+            <FormControlLabel control={<Checkbox checked={ai.mc} name="mc" onChange={handleCheckbox} />} label="Matemática computacional" />
+            <FormControlLabel control={<Checkbox checked={ai.al} name="al" onChange={handleCheckbox} />} label="Algoritmos" />
+            <FormControlLabel control={<Checkbox checked={ai.es} name="es" onChange={handleCheckbox} />} label="Engenharia de software" />
           </FormGroup>
 
         </FormControl>
 
         <Box
           sx={{
-            width: "80%",
             display: "flex",
             justifyContent: "center",
             mt: 2,
           }}
-          component="form"
         >
           <Button variant="contained" type="submit">
             Cadastrar
